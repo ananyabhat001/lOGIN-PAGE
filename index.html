@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page with CAPTCHA</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; }
+    .container { background: #fff; padding: 30px; width: 350px; margin: 100px auto; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
+    .cap-box { font-weight: bold; font-size: 20px; letter-spacing: 2px; background: #eee; padding: 5px; border-radius: 5px; margin-bottom: 10px; display: inline-block;}
+    .input { display: block; width: 100%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;}
+    .btn { background: #4046e5; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;}
+    .btn:hover { background: #2327be; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm" autocomplete="off">
+      <input type="text" id="username" class="input" placeholder="Username" required>
+      <input type="password" id="password" class="input" placeholder="Password" required>
+      <div class="cap-box" id="captcha"></div>
+      <input type="text" id="capInput" class="input" placeholder="Enter CAPTCHA" required>
+      <button class="btn" type="submit">Login</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+  </div>
+  <script>
+    // Generate simple math CAPTCHA
+    let num1 = Math.floor(Math.random()*10), num2 = Math.floor(Math.random()*10);
+    document.getElementById('captcha').innerText = num1 + " + " + num2 + " = ?";
+    let answer = num1 + num2;
+
+    document.getElementById('loginForm').onsubmit = function(e){
+      e.preventDefault();
+      let userCap = document.getElementById('capInput').value;
+      if (parseInt(userCap) !== answer) {
+        document.getElementById('errorMsg').innerText = "Incorrect CAPTCHA, try again.";
+        // regenerate captcha
+        num1 = Math.floor(Math.random()*10); num2 = Math.floor(Math.random()*10);
+        document.getElementById('captcha').innerText = num1 + " + " + num2 + " = ?";
+        answer = num1 + num2;
+        return false;
+      }
+      // Success: Redirect
+      window.location.href = "welcome.html";
+    };
+  </script>
+</body>
+</html>
